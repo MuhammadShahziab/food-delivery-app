@@ -38,6 +38,7 @@ const Header = ({ admin = false }) => {
 
   const navLinks = admin ? adminLinks : menu;
 
+  console.log(status, "check status session ");
   useEffect(() => {
     if (userData?.image) {
       setProfile(userData.image);

@@ -76,7 +76,7 @@ export default function EditableImage({
         </div>
       ) : (
         <label
-          htmlFor={images.length > 2 ? "" : "upload"}
+          htmlFor={images?.length > 2 ? "" : "upload"}
           className={`${
             imageLoading && "hidden"
           } border rounded-lg cursor-pointer relative w-[100px] h-[100px] md:w-[150px] md:h-[150px] flex flex-col justify-center items-center gap-y-2`}

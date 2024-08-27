@@ -2,26 +2,23 @@ import NextAuth, { getServerSession } from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import User from "@/app/models/User";
-// import ConnectDB from "@/app/dbConnect/Connect";
-// import GoogleProvider from "next-auth/providers/google";
-// import { MongoDBAdapter } from "@auth/mongodb-adapter";
-// import clientPromise from "@libs/mongoConnect";
-
-import * as mongoose from "mongoose";
+import GoogleProvider from "next-auth/providers/google";
+import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import clientPromise from "@libs/mongoConnect";
 import UserInfo from "@app/models/UserInfo";
 import ConnectDB from "@app/dbConnect/Connect";
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
-  // adapter: MongoDBAdapter(clientPromise),
+  adapter: MongoDBAdapter(clientPromise),
   session: {
-    jwt: true, // Ensure JWT session is enabled if using JWT sessions
+    strategy: "jwt",
   },
   providers: [
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    // }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     CredentialsProvider({
       name: "Credentials",
       id: "credentials",
@@ -33,26 +30,39 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        console.log({ credentials }, "check credential");
-        const email = credentials?.email;
-        const password = credentials?.password;
+        try {
+          const email = credentials?.email;
+          const password = credentials?.password;
 
-        await ConnectDB();
-        const user = await User.findOne({ email });
-        const passwordOk = user && bcrypt.compareSync(password, user.password);
-        console.log(user, "check user");
-        console.log(passwordOk, "check passwordOk");
-        if (passwordOk) {
+          await ConnectDB();
+          const user = await User.findOne({ email });
+
+          if (!user) {
+            // User does not exist
+            throw new Error("No user found with this email.");
+          }
+
+          const passwordOk = bcrypt.compareSync(password, user.password);
+
+          if (!passwordOk) {
+            // Password does not match
+            throw new Error("Incorrect password.");
+          }
+
+          // Return user object if credentials are valid
           return user;
+        } catch (error) {
+          console.error("Error during authorization", error.message);
+          throw new Error(error.message);
         }
-
-        return null;
       },
     }),
   ],
   callbacks: {
     async session({ session, token }) {
-      session.user.id = token.id;
+      if (token) {
+        session.user.id = token.id;
+      }
       return session;
     },
     async jwt({ token, user }) {

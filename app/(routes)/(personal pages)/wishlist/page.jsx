@@ -15,9 +15,7 @@ const WishListPage = () => {
         <Heading_section heading="Wishlist"></Heading_section>
       </div>
 
-      {wishlist?.length === 0 && <EmptySection label="Empty Wishlist" />}
-
-      {wishlist?.length > 0 && (
+      {wishlist?.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-11 padding-b">
           {wishlist?.map((foodItem) => {
             return (
@@ -31,6 +29,10 @@ const WishListPage = () => {
             );
           })}
         </div>
+      ) : (
+        <>
+          <EmptySection label="Empty Wishlist" />
+        </>
       )}
     </Box>
   );

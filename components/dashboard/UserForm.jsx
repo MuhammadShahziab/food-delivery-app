@@ -19,14 +19,27 @@ const UserForm = ({ userInfo, saveData, loading }) => {
 
   const { userData: loggedInUserData } = userProfile();
 
-const handleAddressInputs=(name,value)=>{
-if(name==="phone"){setPhone(value)};
-if(name==="city"){setPhone(value)};
-if(name==="address"){setPhone(value)};
-if(name==="postal"){setPhone(value)};
+  console.log(city, "cheking address");
 
-}
+  const handleAddressInputs = (name, value) => {
+    switch (name) {
+      case "phone":
+        setPhone(value);
+        break;
+      case "city":
+        setCity(value);
+        break;
+      case "address":
+        setAddress(value);
+        break;
+      case "postal":
+        setPostal(value);
+        break;
 
+      default:
+        break;
+    }
+  };
   useEffect(() => {
     if (userInfo) {
       setName(userInfo.name || "");
@@ -88,7 +101,10 @@ if(name==="postal"){setPhone(value)};
               />
             </div>
           </div>
-          <AddressInputs addressProps={{city,address,postal,phone}} setAddressProps={handleAddressInputs}></AddressInputs>
+          <AddressInputs
+            addressProps={{ phone, city, address, postal }}
+            setAddressProps={handleAddressInputs}
+          ></AddressInputs>
 
           {loggedInUserData?.admin && (
             <label htmlFor="admin" className="flex gap-2 items-center">
