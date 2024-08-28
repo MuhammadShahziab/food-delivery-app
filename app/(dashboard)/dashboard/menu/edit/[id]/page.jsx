@@ -4,7 +4,7 @@ import EditableImage from "@components/dashboard/EditableImage";
 import FoodItemForm from "@components/dashboard/FoodItemForm";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useUserProfile } from "@app/customHooks/UserProfile";
+import { useUserProfile } from "@app/customHooks/userProfile";
 import { PuffLoader } from "react-spinners";
 import Box from "@components/Box";
 

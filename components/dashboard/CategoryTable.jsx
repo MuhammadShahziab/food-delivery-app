@@ -18,7 +18,7 @@ import DataTable from "react-data-table-component";
 import { ClipLoader, PuffLoader } from "react-spinners";
 import { Edit, Ellipsis, PlusCircle, Trash } from "lucide-react";
 import toast from "react-hot-toast";
-import { userProfile } from "@app/customHooks/UserProfile";
+import { userProfile } from "@app/customHooks/userProfile";
 import Link from "next/link";
 import Image from "next/image";
 import Loading from "@components/Loading";

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { addData } from "@app/services";
 import FoodItemForm from "@components/dashboard/FoodItemForm";
 import EditableImage from "@components/dashboard/EditableImage";
-import { useUserProfile } from "@app/customHooks/UserProfile";
+import { useUserProfile } from "@app/customHooks/userProfile";
 import { PuffLoader } from "react-spinners";
 import Box from "@components/Box";
 

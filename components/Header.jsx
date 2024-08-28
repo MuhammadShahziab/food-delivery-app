@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { userProfile } from "@app/customHooks/UserProfile";
+import { userProfile } from "@app/customHooks/userProfile";
 import { CartContext } from "@app/contextProvider/Provider";
 import MyAccounts from "./MyAccounts";
 

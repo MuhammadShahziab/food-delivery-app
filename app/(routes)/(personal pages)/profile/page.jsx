@@ -1,5 +1,5 @@
 "use client";
-import { useUserProfile } from "@app/customHooks/UserProfile";
+import { useUserProfile } from "@app/customHooks/userProfile";
 import { getData, updateData } from "@app/services";
 import Box from "@components/Box";
 import UserForm from "@components/dashboard/UserForm";

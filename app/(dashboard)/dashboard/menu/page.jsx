@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useUserProfile } from "@app/customHooks/UserProfile";
+import { useUserProfile } from "@app/customHooks/userProfile";
 import Loading from "@components/Loading";
 import DeleteDialog from "@components/dashboard/DeleteDialog";
 import Box from "@components/Box";

@@ -1,6 +1,6 @@
 "use client";
 import { CartContext, cartProductPrice } from "@app/contextProvider/Provider";
-import { useUserProfile } from "@app/customHooks/UserProfile";
+import { useUserProfile } from "@app/customHooks/userProfile";
 import { addData } from "@app/services";
 import AddressInputs from "@components/AddressInputs";
 import Box from "@components/Box";

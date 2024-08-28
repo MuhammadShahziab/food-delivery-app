@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import EditableImage from "./EditableImage";
 import { Button } from "@components/ui/button";
 import { ClipLoader } from "react-spinners";
-import { userProfile } from "@app/customHooks/UserProfile";
+import { userProfile } from "@app/customHooks/userProfile";
 import AddressInputs from "@components/AddressInputs";
 
 const UserForm = ({ userInfo, saveData, loading }) => {
