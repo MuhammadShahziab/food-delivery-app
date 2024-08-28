@@ -54,7 +54,6 @@ const CategoryPage = () => {
       name: "Category Name",
       selector: (row) => (
         <label className="md:text-lg text-neutral-500 capitalize">
-          {" "}
           {row.name}
         </label>
       ),
