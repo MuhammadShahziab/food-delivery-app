@@ -4,7 +4,7 @@ import Box from "@components/Box";
 import Loading from "@components/Loading";
 import OrderList from "@components/orders/OrderList";
 import PaginationButton from "@components/orders/PaginationButton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -14,7 +14,7 @@ const OrdersPage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterOrder, setFilterOrder] = useState("All");
-  console.log(filterOrder, "cecjk filter tpe");
+
   const totalPages = Math.ceil(orders.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, orders.length);
@@ -27,61 +27,63 @@ const OrdersPage = () => {
     setCurrentPage(newPage);
   };
 
-  const getOrders = async () => {
+  const getOrders = useCallback(async () => {
     try {
       setLoading(true);
       const res = await getData("order");
-      setOrders(res?.orders);
-      setSearchOrders(res?.orders);
-      console.log(searchOrders, "check filter ");
+      setOrders(res?.orders || []);
+      setSearchOrders(res?.orders || []);
     } catch (error) {
-      console.log(error);
+      console.error("Failed to fetch orders:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleFilterChange = (type) => {
-    setFilterOrder(type);
-    let filterOrders;
-    if (type === "All") {
-      filterOrders = orders;
-    }
-    if (type === "Making") {
-      filterOrders = orders.filter((item) => item.status === "making");
-    }
-    if (type === "On way") {
-      filterOrders = orders.filter((item) => item.status === "on way");
-    }
-    if (type === "Unread") {
-      filterOrders = orders.filter((item) => item.isNewOrder);
-    }
-    setSearchOrders(filterOrders);
-  };
+  const handleFilterChange = useCallback(
+    (type) => {
+      setFilterOrder(type);
+      let filterOrders;
+      switch (type) {
+        case "All":
+          filterOrders = orders;
+          break;
+        case "Making":
+          filterOrders = orders.filter((item) => item.status === "making");
+          break;
+        case "On way":
+          filterOrders = orders.filter((item) => item.status === "on way");
+          break;
+        case "Unread":
+          filterOrders = orders.filter((item) => item.isNewOrder);
+          break;
+        default:
+          filterOrders = orders;
+      }
+      setSearchOrders(filterOrders);
+    },
+    [orders]
+  );
 
   useEffect(() => {
     getOrders();
-  }, []);
+  }, [getOrders]);
 
-  useEffect(
-    () => {
-      if (search === "") {
-        handleFilterChange(filterOrder);
-      } else {
-        setSearchOrders(
-          orders.filter((item) => {
-            return (
-              item.orderId?.toLowerCase().includes(search.toLowerCase()) ||
-              item.name.toLowerCase().includes(search.toLowerCase()) ||
-              item.phone.toLowerCase().includes(search.toLowerCase())
-            );
-          })
-        );
-      }
-    },
-    [search, orders],
-    filterOrder
-  );
+  useEffect(() => {
+    if (search === "") {
+      handleFilterChange(filterOrder);
+    } else {
+      setSearchOrders(
+        orders.filter((item) => {
+          return (
+            item.orderId?.toLowerCase().includes(search.toLowerCase()) ||
+            item.name.toLowerCase().includes(search.toLowerCase()) ||
+            item.phone.toLowerCase().includes(search.toLowerCase())
+          );
+        })
+      );
+    }
+  }, [search, orders, filterOrder, handleFilterChange]);
 
   if (loading) {
     return <Loading />;
@@ -94,7 +96,7 @@ const OrdersPage = () => {
           Orders{" "}
           <span className="text-sm text-softtext">({orders?.length})</span>
         </h2>
-        <div className="">
+        <div>
           <input
             type="text"
             name="search"
@@ -109,8 +111,8 @@ const OrdersPage = () => {
           onClick={() => handleFilterChange("All")}
           className={`${
             filterOrder === "All"
-              ? "bg-yellow-100 text-yellow-500 font-semibold "
-              : "bg-gray-50 text-black "
+              ? "bg-yellow-100 text-yellow-500 font-semibold"
+              : "bg-gray-50 text-black"
           } px-5 py-2 border-none rounded-full`}
         >
           All
@@ -120,7 +122,7 @@ const OrdersPage = () => {
           className={`${
             filterOrder === "Making"
               ? "bg-yellow-100 text-yellow-500 font-semibold"
-              : "bg-gray-50 text-black "
+              : "bg-gray-50 text-black"
           } px-5 py-2 border-none rounded-full`}
         >
           Making
@@ -130,7 +132,7 @@ const OrdersPage = () => {
           className={`${
             filterOrder === "On way"
               ? "bg-yellow-100 text-yellow-500 font-semibold"
-              : "bg-gray-50 text-black "
+              : "bg-gray-50 text-black"
           } px-5 py-2 border-none rounded-full`}
         >
           On Way
@@ -140,7 +142,7 @@ const OrdersPage = () => {
           className={`${
             filterOrder === "Unread"
               ? "bg-yellow-100 text-yellow-500 font-semibold"
-              : "bg-gray-50 text-black "
+              : "bg-gray-50 text-black"
           } px-5 py-2 border-none rounded-full`}
         >
           UnRead
@@ -163,7 +165,7 @@ const OrdersPage = () => {
         setPageSize={setPageSize}
         currentPage={currentPage}
         handlePageChange={handlePageChange}
-      ></PaginationButton>
+      />
     </Box>
   );
 };

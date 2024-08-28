@@ -14,17 +14,17 @@ const CategoryEditPage = ({ params }) => {
 
   const getCategories = async () => {
     try {
-      const catgories = await getData("category");
-      console.log(catgories.data, "chek category");
+      const categories = await getData("category");
+      console.log(categories.data, "check category");
 
-      const getSingleCategory = await catgories?.data.find(
+      const getSingleCategory = categories?.data.find(
         (item) => item._id === id
       );
 
       setCategory(getSingleCategory);
-      setImage(getSingleCategory?.image);
+      setImage(getSingleCategory?.image || "");
     } catch (error) {
-      console.log(error);
+      console.error("Failed to fetch categories:", error);
     }
   };
 
@@ -33,34 +33,37 @@ const CategoryEditPage = ({ params }) => {
     try {
       const { name, slug } = data;
       setLoading(true);
-      const res = await updateData("category", { name, slug, image, id });
+      await updateData("category", { name, slug, image, id });
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error("Failed to update category:", error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    getCategories();
-  }, []);
+    if (id) {
+      getCategories();
+    }
+  }, [id]); // Updated to include `id` dependency
 
   return (
     <Box>
       <div className="flex gap-6">
-        <div className="flex-1 justify-center flex ">
+        <div className="flex-1 justify-center flex">
           <EditableImage
             imageLoading={imageLoading}
             setImageLoading={setImageLoading}
             setImage={setImage}
             image={image}
             name="Upload"
-          ></EditableImage>
+          />
         </div>
         <CategoryForm
           handleSubmit={updateCategory}
           category={category}
           loading={loading}
-        ></CategoryForm>
+        />
       </div>
     </Box>
   );

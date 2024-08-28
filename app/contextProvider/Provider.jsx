@@ -22,6 +22,7 @@ export const cartProductPrice = (cartProduct) => {
 export const Provider = ({ children }) => {
   const [cartProducts, setCartProducts] = useState([]);
 
+  // Define ls as a local variable
   const ls = typeof window !== "undefined" ? window.localStorage : null;
 
   useEffect(() => {
@@ -35,20 +36,20 @@ export const Provider = ({ children }) => {
         }
       }
     }
-  }, []);
+  }, []); // No need to include `ls` in the dependency array
 
-  const saveToLocalStorge = (cartProduct) => {
+  const saveToLocalStorage = (cartProduct) => {
     if (ls) {
       ls.setItem("cart", JSON.stringify(cartProduct));
     }
   };
 
-  const removeToCart = (indexToCart) => {
+  const removeFromCart = (indexToCart) => {
     setCartProducts((prevProducts) => {
       const removedCartProduct = prevProducts.filter(
         (item, index) => index !== indexToCart
       );
-      saveToLocalStorge(removeToCart);
+      saveToLocalStorage(removedCartProduct);
       return removedCartProduct;
     });
     toast.success("removed");
@@ -68,7 +69,7 @@ export const Provider = ({ children }) => {
         quantity,
       };
       const newCartProducts = [...prevProducts, cartProduct];
-      saveToLocalStorge(newCartProducts);
+      saveToLocalStorage(newCartProducts);
       return newCartProducts;
     });
   };
@@ -76,7 +77,7 @@ export const Provider = ({ children }) => {
   return (
     <SessionProvider>
       <CartContext.Provider
-        value={{ cartProducts, setCartProducts, addToCart, removeToCart }}
+        value={{ cartProducts, setCartProducts, addToCart, removeFromCart }}
       >
         <WishListProvider>{children}</WishListProvider>
       </CartContext.Provider>

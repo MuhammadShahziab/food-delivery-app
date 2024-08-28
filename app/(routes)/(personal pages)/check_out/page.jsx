@@ -1,6 +1,6 @@
 "use client";
 import { CartContext, cartProductPrice } from "@app/contextProvider/Provider";
-import { userProfile } from "@app/customHooks/userProfile";
+import { useUserProfile } from "@app/customHooks/UserProfile";
 import { addData } from "@app/services";
 import AddressInputs from "@components/AddressInputs";
 import Box from "@components/Box";
@@ -22,7 +22,7 @@ const CheckOutPage = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState("");
-  const { userData } = userProfile();
+  const { userData } = useUserProfile();
   const { cartProducts, setCartProducts } = useContext(CartContext);
 
   const router = useRouter();

@@ -4,6 +4,7 @@ import Box from "@components/Box";
 import Loading from "@components/Loading";
 import OrderList from "@components/orders/OrderList";
 import PaginationButton from "@components/orders/PaginationButton";
+import { useSession } from "next-auth/react";
 
 import React, { useEffect, useState } from "react";
 
@@ -12,12 +13,14 @@ const OrderPage = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  console.log(pageSize, "check page size");
   const totalPages = Math.ceil(orders.length / pageSize);
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, orders.length);
   const currentData = [...orders].reverse().slice(startIndex, endIndex);
+
+  const { data: session } = useSession();
+  const currentuser = session?.email;
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages) {
       return;
@@ -39,8 +42,10 @@ const OrderPage = () => {
   };
 
   useEffect(() => {
-    getOrder();
-  }, []);
+    if (currentuser) {
+      getOrder();
+    }
+  }, [currentuser]);
 
   if (loading) {
     return <Loading></Loading>;
@@ -61,8 +66,12 @@ const OrderPage = () => {
       </h2>
 
       {currentData.length > 0 &&
-        currentData.map((order) => (
-          <OrderList order={order} length={orders.length}></OrderList>
+        currentData.map((order, index) => (
+          <OrderList
+            key={index}
+            order={order}
+            length={orders.length}
+          ></OrderList>
         ))}
 
       <PaginationButton

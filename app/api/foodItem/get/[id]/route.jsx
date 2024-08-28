@@ -8,13 +8,15 @@ export const GET = async (req, { params }) => {
 
   try {
     await ConnectDB();
-    const foodItem = await FoodItem.findById({ _id: id }).populate({ path: "reviews", populate: { path: "user", select: "name email image" } });
+    const foodItem = await FoodItem.findById({ _id: id }).populate({
+      path: "reviews",
+      populate: { path: "user", select: "name email image" },
+    });
     if (foodItem) {
       return NextResponse.json({
         success: true,
         data: foodItem,
       });
-      
     } else {
       return NextResponse.json({
         success: false,

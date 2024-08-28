@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { userProfile } from "@app/customHooks/userProfile";
+import { useUserProfile } from "@app/customHooks/UserProfile";
 import Loading from "@components/Loading";
 import DeleteDialog from "@components/dashboard/DeleteDialog";
 import Box from "@components/Box";
@@ -24,7 +24,7 @@ const MenuPage = () => {
   const [filterFood, setFilterFood] = useState();
   const [deleteDialougeOpen, setDeleteDialougeOpen] = useState(false);
   const [foodItemToDelete, setFoodItemToDelete] = useState(null);
-  const { pageLoading, userData } = userProfile();
+  const { pageLoading, userData } = useUserProfile();
 
   const getFoodItems = async () => {
     try {

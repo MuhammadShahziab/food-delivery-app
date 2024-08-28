@@ -1,21 +1,22 @@
 import { getData } from "@app/services";
 import { useEffect, useState } from "react";
 
-export function userProfile() {
-  const [userData, setUserData] = useState(false);
-  const [loading, setLoading] = useState(false);
+// Rename function to start with "use" for it to be a valid custom hook
+export function useUserProfile() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const getUserProfileInfo = async () => {
     try {
-      setLoading(true);
       const data = await getData("profile");
-
-      setLoading(false);
       setUserData(data);
     } catch (error) {
-      console.log(error);
+      console.error("Failed to fetch user profile:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
   useEffect(() => {
     getUserProfileInfo();
   }, []);

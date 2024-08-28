@@ -155,7 +155,7 @@ input[type="tel"],
 input[type="text"],
 input[type="number"],
 textarea {
-  @apply block w-full mb-2 rounded-md h-11 outline-none;
+  @apply block w-full mb-1 rounded-md h-9 lg:h-11 outline-none;
   @apply border w-full p-2 bg-transparent;
 }
 input[type="email"]:focus,

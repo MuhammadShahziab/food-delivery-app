@@ -85,7 +85,7 @@ const SignUp = () => {
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className=" w-full flex-col flex gap-y-3"
+          className=" w-full flex-col flex gap-y-1"
         >
           <div className="flex flex-col">
             <label className="mb-2">username</label>
@@ -94,7 +94,7 @@ const SignUp = () => {
               defaultValue=""
               type="text"
               name="username"
-              className="outline-none bg-transparent px-3 rounded-md border h-10"
+              className="outline-none bg-transparent px-3 rounded-md border h-11"
             />
             {errors.username && (
               <span className="text-red-500">{errors.username.message}</span>

@@ -1,5 +1,5 @@
 "use client";
-import { userProfile } from "@app/customHooks/userProfile";
+import { useUserProfile } from "@app/customHooks/UserProfile";
 import { getData, updateData } from "@app/services";
 import Box from "@components/Box";
 import UserForm from "@components/dashboard/UserForm";
@@ -12,8 +12,7 @@ const ProfilePage = () => {
   const { status } = useSession();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { pageLoading, userData } = userProfile();
-  console.log(userInfo, "check user info ");
+  const { pageLoading, userData } = useUserProfile();
 
   const handleProfileInfoUpdate = async (e, data) => {
     e.preventDefault();

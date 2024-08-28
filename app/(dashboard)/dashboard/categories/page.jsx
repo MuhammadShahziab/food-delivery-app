@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Edit, Ellipsis, PlusCircle, Trash } from "lucide-react";
-import { userProfile } from "@app/customHooks/userProfile";
+import { useUserProfile } from "@app/customHooks/UserProfile";
 import Link from "next/link";
 import Image from "next/image";
 import Loading from "@components/Loading";
@@ -23,7 +23,7 @@ const CategoryPage = () => {
   const [categoryToDelete, setCategoryToDelete] = useState(null);
   const [deleteDialougeOpen, setDeleteDialougeOpen] = useState(false);
 
-  const { pageLoading, userData } = userProfile();
+  const { pageLoading, userData } = useUserProfile();
 
   const getCategories = async () => {
     try {

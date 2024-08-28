@@ -1,5 +1,5 @@
 "use client";
-import { userProfile } from "@app/customHooks/userProfile";
+import { useUserProfile } from "@app/customHooks/UserProfile";
 import { updateData } from "@app/services";
 import Box from "@components/Box";
 import UserForm from "@components/dashboard/UserForm";
@@ -12,7 +12,7 @@ const UserEditPage = ({ params }) => {
 
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
-  const { pageLoading, userData } = userProfile();
+  const { pageLoading, userData } = useUserProfile();
   const handleUserInfoUpdate = async (e, data) => {
     e.preventDefault();
     setLoading(true);
@@ -34,8 +34,10 @@ const UserEditPage = ({ params }) => {
   };
 
   useEffect(() => {
-    getUser();
-  }, []);
+    if (id) {
+      getUser();
+    }
+  }, [id]);
 
   if (pageLoading) {
     return (

@@ -4,7 +4,7 @@ import EditableImage from "@components/dashboard/EditableImage";
 import FoodItemForm from "@components/dashboard/FoodItemForm";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { userProfile } from "@app/customHooks/userProfile";
+import { useUserProfile } from "@app/customHooks/UserProfile";
 import { PuffLoader } from "react-spinners";
 import Box from "@components/Box";
 
@@ -15,7 +15,7 @@ const EditPage = ({ params }) => {
   const [foodItem, setFoodItem] = useState();
   const { id } = params;
 
-  const { pageLoading, userData } = userProfile();
+  const { pageLoading, userData } = useUserProfile();
 
   const router = useRouter();
   const getFoodItem = async () => {
@@ -46,8 +46,10 @@ const EditPage = ({ params }) => {
   };
 
   useEffect(() => {
-    getFoodItem();
-  }, []);
+    if (id) {
+      getFoodItem();
+    }
+  }, [id]);
   if (!userData.admin) {
     return "you are not an Admin...";
   }

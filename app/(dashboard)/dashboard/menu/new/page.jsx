@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { addData } from "@app/services";
 import FoodItemForm from "@components/dashboard/FoodItemForm";
 import EditableImage from "@components/dashboard/EditableImage";
-import { userProfile } from "@app/customHooks/userProfile";
+import { useUserProfile } from "@app/customHooks/UserProfile";
 import { PuffLoader } from "react-spinners";
 import Box from "@components/Box";
 
@@ -12,7 +12,7 @@ const AddItemPage = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
-  const { pageLoading, userData } = userProfile();
+  const { pageLoading, userData } = useUserProfile();
 
   const handleSubmit = async (e, data) => {
     e.preventDefault();
